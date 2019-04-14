@@ -1,6 +1,5 @@
 import tkinter as tk
 from jeu_de_la_vie.Jeu_de_la_vie import *
-import simplifiedpytrends
 
 class App(tk.Tk):
     def __init__(self, rows, cols, refresh_delay, jeu):
