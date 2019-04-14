@@ -1,9 +1,9 @@
 import tkinter as tk
-import random
-
+from jeu_de_la_vie.Jeu_de_la_vie import *
+import simplifiedpytrends
 
 class App(tk.Tk):
-    def __init__(self, rows, cols, refresh_delay):
+    def __init__(self, rows, cols, refresh_delay, jeu):
         tk.Tk.__init__(self)
         self.title("Random")
         self.cellwidth = 25
@@ -12,6 +12,7 @@ class App(tk.Tk):
         self.canvas.pack(side="top", fill="both", expand="false")
         self.rows = rows
         self.cols = cols
+        self.jeu = jeu
 
         self.rects = {}
         for column in range(self.rows):
@@ -26,13 +27,16 @@ class App(tk.Tk):
 
     def redraw(self, delay):
         self.canvas.itemconfig("rect", fill="gray")
-        for i in range(10):
-            row = random.randint(0, self.rows - 1)
-            col = random.randint(0, self.cols - 1)
-            item_id = self.rects[row, col]
-            self.canvas.itemconfig(item_id, fill="black")
+        for coordinates, alive in self.jeu.board.items():
+            if alive :
+                item_id = self.rects[coordinates]
+                self.canvas.itemconfig(item_id, fill="black")
+        self.jeu.nouveau_tour()
         self.after(delay, lambda: self.redraw(delay))
 
-
-app = App(50, 50, 10)
+nombre_de_colonne = 50
+nombre_de_ligne = 50
+nombres_de_cellules_de_depart = 2000
+jeu = jeu_de_la_vie(nombre_de_colonne , nombre_de_ligne, nombres_de_cellules_de_depart)
+app = App(nombre_de_colonne, nombre_de_ligne, 10, jeu)
 app.mainloop()
